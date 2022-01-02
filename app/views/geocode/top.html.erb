@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>住所情報取得</title>
+  <!--  <link rel="stylesheet" media="all" href="/assets/application-77c1f0b9f6edb2095e34d8740e9aec6c5b2edcc91b3fa0e29c2e1131cc8f00cf.css">-->
+  <meta charset="utf-8"/>
+</head>
+<body class="top">
+
+<div id="wrapper">
+  <div id="header">
+    <h1><i class="fa fa-flip-horizontal fa-hand-lizard-o"></i> Google Maps Platformから住所情報を取得する
+      <i class="fa fa-hand-lizard-o"></i>
+    </h1>
+  </div>
+  <br>
+  <div id="header">
+    <h2><i class="fa fa-flip-horizontal fa-hand-lizard-o"></i> 検索フォーム <i class="fa fa-hand-lizard-o"></i>
+    </h2>
+  </div>
+  <div id="contents">
+    <div id="form">
+      <%= form_tag('/geocode', :method => :post) do %>
+        <!--<p><label for="cards">Cards:</label></p>-->
+        <p><input type="text" name="address" class="address-input" value="<%= @address %>" placeholder="東京都千代田区麹町~~~">
+        </p>
+        <p><input type="submit" name="commit" value="Search!!" id="check"></p>
+      <% end %>
+    </div>
+    <% if @results && ['OK', 'already_searched'].include?(@results['status']) %>
+      <% @results['results'].each do |result| %>
+        <div id="result-table">
+
+          <table border="0.5">
+            <tr>
+              <th>検索住所</th>
+              <td><%= @address %></td>
+            </tr>
+            <tr>
+              <th>処理結果</th>
+              <td><%= @results['status'] %></td>
+            </tr>
+            <tr>
+              <th>formatted_address</th>
+              <td><%= result['formatted_address'] %></td>
+            </tr>
+            <tr>
+              <th>types</th>
+              <td><%= result['types'] %></td>
+            </tr>
+            <tr>
+              <th>location_type</th>
+              <td><%= result['geometry']['location_type'] %></td>
+            </tr>
+            <tr>
+              <th>緯度</th>
+              <td><%= result['geometry']['location']['lat'] %></td>
+            </tr>
+            <tr>
+              <th>経度</th>
+              <td><%= result['geometry']['location']['lng'] %></td>
+            </tr>
+            <tr>
+              <th>partial_match</th>
+              <td><%= result['partial_match'] %></td>
+            </tr>
+          </table>
+
+        </div>
+      <% end %>
+    <% else %>
+      <p><%= @results %></p>
+    <% end %>
+  </div>
+  <br>
+  <br>
+<!--  <div id="header">-->
+<!--    <h2><i class="fa fa-flip-horizontal fa-hand-lizard-o"></i> CSVで一括検索 <i class="fa fa-hand-lizard-o"></i>-->
+<!--    </h2>-->
+<!--  </div>-->
+<!--  <div>-->
+    <%#= form_tag geocode_import_path, multipart: true do %>
+      <%#= file_field_tag :file %>
+      <%#= submit_tag "CSV upload!!" %>
+    <%# end %>
+<!--  </div>-->
+<!--  <br>-->
+<!--  <div>※CSVヘッダーは「住所, 数字(integer), boolean(true/false)の形式です。</div>-->
+
+  <%# unless @import_file %>
+<!--  <p>ファイルを選択してください</p>-->
+  <%# end %>
+  <div id="header">
+    <h2><i class="fa fa-flip-horizontal fa-hand-lizard-o"></i> CSVで一括検索 <i class="fa fa-hand-lizard-o"></i>
+    </h2>
+  </div>
+  <div>
+    <%= form_tag geocode_s3_upload_path, multipart: true do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "S3 upload!!" %>
+    <% end %>
+  </div>
+  <% unless @csv_file %>
+    <p>ファイルを選択してください</p>
+  <% end %>
+</div>
+<br>
+<br>
+<div>
+  <a href="https://developers.google.com/maps/documentation/geocoding/intro">geocoding API公式ガイド</a>
+</div>
+<div>
+  <a href="https://docs.google.com/spreadsheets/d/1EZVB7IQEzBcKvR7uNwR5Pd60ZsKFEfBZUI7VVYKFcyY/edit#gid=695917832">公式ガイドより抜粋</a>
+</div>
+<br>
+</body>
+</html>

@@ -1,0 +1,5 @@
+geocoding:
+  url: "https://maps.googleapis.com/maps/api/geocode/json?address="
+
+s3:
+  bucket_name: "geocoding-address"

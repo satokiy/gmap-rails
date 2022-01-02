@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ファイル一覧</title>
+
+  <meta charset="utf-8"/>
+</head>
+<body class="download">
+<h1>結果ファイル</h1>
+<p>※右クリック→保存　でダウンロードしてください</p>
+<div>
+<!--  <tr>-->
+<!--    <th>オブジェクト名</th>-->
+<!--    <th>url</th>-->
+<!--  </tr>-->
+<!--  <tr>-->
+  <% @objects.each do |item| %>
+    <p><%= link_to(item.key.gsub("processed/", ""),item.presigned_url(:get)) %></p>
+  <% end %>
+<!--  </tr>-->
+</div>
+</body>
+<!--<footer>-->
+<!--  <p>&copy; Satoki Yamada. 2020.</p>-->
+<!--</footer>-->
+</html>
+
